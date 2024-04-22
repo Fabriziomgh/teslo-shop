@@ -1,25 +1,40 @@
-import { CustomTitle, QuantitySelector } from '@/components';
+import { CustomTitle } from '@/components';
 import { initialData } from '@/seed/seed';
-import Link from 'next/link';
 import Image from 'next/image';
-import { titleFont } from '@/config/fonts';
+import clsx from 'clsx';
+import { IoCardOutline } from 'react-icons/io5';
 
 const productsInCart = [initialData.products[0], initialData.products[1]];
 
-export default function CheckoutPage() {
+interface Props {
+   params: {
+      id: string;
+   };
+}
+
+export default function OrderPage({ params }: Props) {
+   const { id } = params;
    return (
       <section className="max-w-6xl mx-auto mb-72 px-2 lg:px-0 ">
          <div className="w-full text-center lg:text-left">
-            <CustomTitle title="Verificación de la Orden" />
-            <Link
-               href="/cart"
-               className="underline uppercase inline-block mb-6"
-            >
-               Ir al Carrito
-            </Link>
+            <CustomTitle title={`Orden #${id}`} />
          </div>
+
          <div className="flex flex-col lg:flex-row">
             <div className="flex flex-col mb-5 w-full lg:w-3/5">
+               <div
+                  className={clsx(
+                     'flex w-full lg:w-1/2 items-center rounded shadow py-2 px-3.5 text-xs font-bold text-white mb-5',
+                     {
+                        'bg-red-500': false,
+                        'bg-green-700': true,
+                     }
+                  )}
+               >
+                  <IoCardOutline size={30} />
+                  {/* <span className="text-lg mx-2">Pago pendiente</span> */}
+                  <span className="text-lg mx-2">Pagado</span>
+               </div>
                {productsInCart.map((product) => (
                   <div key={product.slug} className="flex gap-x-4 mb-2 w-full">
                      <Image
@@ -116,12 +131,19 @@ export default function CheckoutPage() {
                   </span>
                </div>
                <div className="mt-5 mb-2 w-full">
-                  <Link
-                     href="/orders/123"
-                     className="flex justify-center btn-primary"
+                  <div
+                     className={clsx(
+                        'flex  items-center rounded shadow py-2 px-3.5 text-xs font-bold text-white mb-5',
+                        {
+                           'bg-red-500': false,
+                           'bg-green-700': true,
+                        }
+                     )}
                   >
-                     Confirmar Orden
-                  </Link>
+                     <IoCardOutline size={30} />
+                     {/* <span className="text-lg mx-2">Pago pendiente</span> */}
+                     <span className="text-lg mx-2">Pagado</span>
+                  </div>
                </div>
             </div>
          </div>

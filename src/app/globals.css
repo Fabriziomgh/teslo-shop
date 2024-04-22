@@ -60,6 +60,7 @@ body {
 
 .btn-primary {
   background-color: #3b82f6;
+  text-transform: uppercase;
   color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
@@ -72,6 +73,7 @@ body {
 
 .btn-secondary {
   background-color: #edf2f7;
+  text-transform: uppercase;
   color: #000000;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;

@@ -3,14 +3,14 @@ import { titleFont } from '@/config/fonts';
 interface Props {
    title: string;
    subtitle?: string;
-   className: string;
+   className?: string;
 }
 
 export const CustomTitle = ({ title, subtitle, className }: Props) => {
    return (
       <div className={`mb-2 ${className}`}>
          <h1
-            className={`${titleFont.className} text-4xl antialiased font-semibold my-8`}
+            className={`${titleFont.className} text-4xl antialiased font-semibold my-6`}
          >
             {title}
          </h1>
