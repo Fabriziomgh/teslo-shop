@@ -1,7 +1,26 @@
-import { CustomTitle, ProductGrid } from '@/components';
-import { initialData } from '@/seed/seed';
-const products = initialData.products;
-export default function ShopPage() {
+export const revalidate = 60;
+
+import { getProductPaginatedWithImages } from '@/actions';
+import { CustomTitle, Pagination, ProductGrid } from '@/components';
+import { redirect } from 'next/navigation';
+
+interface Props {
+   searchParams: {
+      page: string;
+   };
+}
+
+export default async function HomePage({ searchParams }: Props) {
+   const page = searchParams.page ? Number(searchParams.page) : 1;
+   const { products, totalPages, currentPage } =
+      await getProductPaginatedWithImages({
+         page,
+      });
+
+   if (products.length === 0) {
+      redirect('/');
+   }
+
    return (
       <>
          <CustomTitle
@@ -10,6 +29,7 @@ export default function ShopPage() {
             className="mb-2"
          />
          <ProductGrid products={products} />
+         <Pagination totalPages={totalPages} />
       </>
    );
 }

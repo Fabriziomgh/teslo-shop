@@ -1,12 +1,17 @@
+export const revalidate = 604800;
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+import { getProductBySlug } from '@/actions';
 import {
    ProductMobileSlideShow,
    ProductSlideShow,
    QuantitySelector,
    SizeSelector,
+   StockLabel,
 } from '@/components';
 import { titleFont } from '@/config/fonts';
-import { initialData } from '@/seed/seed';
-import { notFound } from 'next/navigation';
+import { AddToCart } from './ui/AddToCart';
 
 interface Props {
    params: {
@@ -14,11 +19,26 @@ interface Props {
    };
 }
 
-export default function ProductPage({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
    const { slug } = params;
-   const product = initialData.products.find(
-      (product) => product.slug === slug
-   );
+
+   const product = await getProductBySlug(slug);
+
+   return {
+      title: product?.title ?? '',
+      description: product?.description ?? '',
+      openGraph: {
+         title: product?.title ?? '',
+         description: product?.description ?? '',
+         images: [`/products/${product?.images[1]}`],
+      },
+   };
+}
+
+export default async function ProductBySlugPage({ params }: Props) {
+   const { slug } = params;
+   const product = await getProductBySlug(slug);
+
    if (!product) {
       notFound();
    }
@@ -40,6 +60,7 @@ export default function ProductPage({ params }: Props) {
             />
          </div>
          <div className="col-span-1 px-5 ">
+            <StockLabel slug={product.slug} />
             <h1
                className={`${titleFont.className} antialiased font-bold text-xl`}
             >
@@ -48,13 +69,7 @@ export default function ProductPage({ params }: Props) {
             <span className="mb-5 block text-lg font-semibold text-gray-700 ">
                ${product.price}
             </span>
-            <SizeSelector
-               selectedSize={product.sizes[1]}
-               availableSize={product.sizes}
-            />
-            <QuantitySelector quantity={1} />
-
-            <button className="btn-primary my-5">Agregar al carrito</button>
+            <AddToCart product={product} />
             <h3 className="font-semibold text-md mb-1">Descripción</h3>
             <p className="text-light">{product.description}</p>
          </div>

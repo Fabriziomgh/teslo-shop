@@ -2,10 +2,18 @@
 
 import Link from 'next/link';
 import { IoSearchOutline, IoCartOutline } from 'react-icons/io5';
-import { useUIStore } from '@/store';
+import { useCartStore, useUIStore } from '@/store';
 import { titleFont } from '@/config/fonts';
+import { useEffect, useState } from 'react';
 export const TopMenu = () => {
    const openSideMenu = useUIStore((state) => state.openSideMenu);
+   const totalQuantity = useCartStore((state) => state.getTotalQuantity());
+   const [loading, setLoading] = useState(false);
+
+   useEffect(() => {
+      setLoading(true);
+   }, []);
+
    return (
       <nav className="flex items-center justify-between py-2 px-5 w-full ">
          <div>
@@ -18,13 +26,13 @@ export const TopMenu = () => {
          </div>
          <div className="hidden md:block">
             <div className="flex space-x-2  ">
-               <Link href="/category/men" className="p-2 hover:underline  ">
+               <Link href="/gender/men" className="p-2 hover:underline  ">
                   Hombres
                </Link>
-               <Link href="/category/women" className="p-2 hover:underline ">
+               <Link href="/gender/women" className="p-2 hover:underline ">
                   Mujeres
                </Link>
-               <Link href="/category/kid" className="p-2 hover:underline ">
+               <Link href="/gender/kid" className="p-2 hover:underline ">
                   Niños
                </Link>
             </div>
@@ -33,11 +41,13 @@ export const TopMenu = () => {
             <Link href="/search">
                <IoSearchOutline size={30} />
             </Link>
-            <Link href="/cart">
+            <Link href={loading && totalQuantity === 0 ? '/empty' : '/cart'}>
                <div className="relative">
-                  <span className="absolute -top-1 -right-1 font-bold bg-blue-500 text-white text-xs rounded-full px-1 ">
-                     3
-                  </span>
+                  {loading && totalQuantity > 0 && (
+                     <span className="absolute -top-1 -right-1 font-bold bg-blue-500 text-white text-xs rounded-full px-1 ">
+                        {totalQuantity}
+                     </span>
+                  )}
                   <IoCartOutline size={30} />
                </div>
             </Link>

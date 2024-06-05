@@ -1,5 +1,5 @@
 export interface Product {
-   // id:string
+   id: string;
    description: string;
    images: string[];
    inStock: number;
@@ -8,8 +8,17 @@ export interface Product {
    slug: string;
    tags: string[];
    title: string;
-   type: ValidTypes;
+   // type: ValidTypes;
    gender: ValidCategories;
+}
+export interface CartProduct {
+   id: string;
+   slug: string;
+   title: string;
+   size: ValidSizes;
+   price: number;
+   quantity: number;
+   image: string;
 }
 
 export type ValidCategories = 'men' | 'women' | 'kid' | 'unisex';

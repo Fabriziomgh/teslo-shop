@@ -1,9 +1,15 @@
+import { Toaster } from 'sonner';
+
 import type { Metadata } from 'next';
+
 import { inter } from '@/config/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
-   title: 'Teslo | Shop',
+   title: {
+      template: '%s - Teslo | Shop',
+      default: 'Home - Teslo | Shop',
+   },
    description: 'Tienda virtual',
 };
 
@@ -14,7 +20,10 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en">
-         <body className={inter.className}>{children}</body>
+         <body className={inter.className}>
+            <Toaster position="top-left" />
+            {children}
+         </body>
       </html>
    );
 }
